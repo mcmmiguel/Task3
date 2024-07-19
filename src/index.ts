@@ -26,17 +26,37 @@ class Error {
     }
 }
 
+
 class Game {
-    static generateComputerMove(moveList: string[]) {
-        const computerMove = Math.floor(Math.random() * ((moveList.length - 1) + 1)) + 1;
+
+    private moveList: string[]
+
+    constructor(moves: string[]) {
+        this.moveList = moves;
+    }
+
+    generateComputerMove() {
+        const computerMove = Math.floor(Math.random() * ((this.moveList.length - 1) + 1)) + 1;
         console.log(computerMove);
         return computerMove.toString();
+    }
+
+    getGameWinner(computerMove: string, userMove: string) {
+        const aditionalMovement = 1;
+        const winner = Math.sign((+computerMove - +userMove + aditionalMovement + moveList.length) % moveList.length - aditionalMovement);
+
+        if (winner === 1) {
+            console.log('You lose!');
+        } else if (winner === -1) {
+            console.log('You win!!');
+        } else {
+            console.log("It's a draw");
+        }
     }
 
 }
 
 class MenuGame {
-
     static validateMoves(moveList: string[]) {
         const formattedMoves = moveList.map(move => move.trim().toLocaleLowerCase());
         const duplicates = formattedMoves.filter((value, index, self) => self.indexOf(value) !== index);
@@ -55,13 +75,14 @@ class MenuGame {
 
     static showMenu(moves: string[]) {
         const secretKey = SecretKey.generateKey();
-        const computerMove = Game.generateComputerMove(moves);
+        const game = new Game(moveList);
+        const computerMove = game.generateComputerMove();
 
         const computerHmac = HMAC.generateHMAC(secretKey, computerMove);
         console.log('HMAC: ' + computerHmac);
         console.log(moves[+computerMove - 1]); //Mostrar el movimiento de la computadora
         // console.log('Secret Key: ' + secretKey);
-
+        // console.log(game.getGameWinner(computerMove, '1'));
         console.log("Available moves:");
 
         for (let i = 0; i < moves.length; i++) {
@@ -71,9 +92,10 @@ class MenuGame {
         console.log('0 - exit');
         console.log('? - help');
 
-        const move = readline.question("Enter your move: ");
+        const userMove = readline.question("Enter your move: ");
+        game.getGameWinner(computerMove, userMove);
 
-        this.selectMove(move);
+        this.selectMove(userMove);
     }
 
     static selectMove(move: string) {
