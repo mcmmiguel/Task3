@@ -1,3 +1,4 @@
+import colors from 'colors';
 export default class Game {
 
     static moveList: string[]
@@ -10,7 +11,6 @@ export default class Game {
 
     generateComputerMove() {
         Game.computerMove = (Math.floor(Math.random() * ((Game.moveList.length - 1) + 1)) + 1).toString();
-        console.log(Game.computerMove);
         return Game.computerMove;
     }
 
@@ -22,15 +22,15 @@ export default class Game {
     }
 
     static showWinner(winner: number) {
-        console.log(`Your move: ${Game.moveList[+this.userMove - 1]}`);
-        console.log(`Computer move: ${Game.moveList[+Game.computerMove - 1]}`);
+        console.log(colors.blue(`Your move:`), colors.yellow(`${Game.moveList[+Game.userMove - 1]}`));
+        console.log(colors.red(`Computer's move:`), colors.yellow(`${Game.moveList[+Game.computerMove - 1]}`));
 
         if (winner === 1) {
-            console.log('You lose :(');
+            console.log(colors.bgRed('You lose :('));
         } else if (winner === -1) {
-            console.log('You win! :D');
+            console.log(colors.bgGreen('You win! :D'));
         } else {
-            console.log("It's a draw");
+            console.log(colors.bgMagenta("It's a draw"));
         }
     }
 

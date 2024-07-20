@@ -2,6 +2,7 @@ import readline from 'readline-sync';
 import Error from '../utils/Error';
 import Game from './Game';
 import HelpTable from './HelpTable';
+import colors from 'colors';
 
 export default class GameMenu {
     static moveList: string[] = [];
@@ -25,10 +26,10 @@ export default class GameMenu {
     static showMenu() {
         for (let i = 0; i < this.moveList.length; i++) {
             const move = this.moveList[i];
-            console.log(`${i + 1} - ${move}`);
+            console.log(colors.green(`${i + 1}`), `- ${move}`);
         }
-        console.log('0 - exit');
-        console.log('? - help');
+        console.log(colors.red('0'), `- exit`);
+        console.log(colors.blue('?'), `- help`);
 
         const userMove = readline.question("Enter your move: ");
         GameMenu.selectMove(userMove);
