@@ -17,7 +17,6 @@
     "typescript": "^5.5.3"
   },
   "dependencies": {
-    "ascii-table": "^0.0.9",
     "cli-table": "^0.3.11",
     "readline-sync": "^1.4.10"
   }

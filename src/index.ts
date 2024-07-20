@@ -32,24 +32,24 @@ class Error {
 
 class Game {
 
-    private moveList: string[]
+    static moveList: string[]
     static computerMove: string = '';
     static userMove: string = '';
 
     constructor(moves: string[]) {
-        this.moveList = moves;
+        Game.moveList = moves;
     }
 
     generateComputerMove() {
-        Game.computerMove = (Math.floor(Math.random() * ((this.moveList.length - 1) + 1)) + 1).toString();
+        Game.computerMove = (Math.floor(Math.random() * ((Game.moveList.length - 1) + 1)) + 1).toString();
         console.log(Game.computerMove);
         return Game.computerMove;
     }
 
-    static getGameWinner(userMove: string, machineMove?: string) {
-        const pcMove = machineMove || this.computerMove;
-        const halfMovement = (moveList.length - 1) / 2;
-        const winner = Math.sign((Number(pcMove) - Number(userMove) + halfMovement + moveList.length) % moveList.length - halfMovement);
+    static getGameWinner(userMove: string, providedMachineMove?: string) {
+        const machineMove = providedMachineMove || this.computerMove;
+        const halfTotalMoves = (Game.moveList.length - 1) / 2;
+        const winner = Math.sign((Number(machineMove) - Number(userMove) + halfTotalMoves + Game.moveList.length) % moveList.length - halfTotalMoves);
         return winner;
     }
 
@@ -110,7 +110,7 @@ class Game {
         console.log(table.toString());
     }
 }
-class MenuGame {
+class GameMenu {
 
     static moveList: string[] = [];
 
@@ -139,7 +139,7 @@ class MenuGame {
         console.log('? - help');
 
         const userMove = readline.question("Enter your move: ");
-        MenuGame.selectMove(userMove);
+        GameMenu.selectMove(userMove);
     }
 
     static selectMove(move: string) {
@@ -160,7 +160,7 @@ class MenuGame {
 }
 
 const moveList = process.argv.slice(2);
-const formattedMoveList = MenuGame.validateMoves(moveList);
+const formattedMoveList = GameMenu.validateMoves(moveList);
 
 if (formattedMoveList) {
     const secretKey = SecretKey.generateKey();
@@ -169,8 +169,7 @@ if (formattedMoveList) {
     const computerHmac = HMAC.generateHMAC(secretKey, computerMove);
     console.log('HMAC: ' + computerHmac);
 
-    MenuGame.showMenu();
-
+    GameMenu.showMenu();
 
     console.log('HMAC Key: ' + secretKey);
     console.log('Check the computer move on: https://www.liavaag.org/English/SHA-Generator/HMAC/');
