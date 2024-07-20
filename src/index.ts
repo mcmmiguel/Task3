@@ -1,5 +1,5 @@
 import readline from 'readline-sync';
-const asciiTable = require('ascii-table');
+import Table from 'cli-table';
 class SecretKey {
     static generateKey() {
         const crypto = require('crypto');
@@ -34,6 +34,7 @@ class Game {
 
     private moveList: string[]
     static computerMove: string = '';
+    static userMove: string = '';
 
     constructor(moves: string[]) {
         this.moveList = moves;
@@ -41,14 +42,19 @@ class Game {
 
     generateComputerMove() {
         Game.computerMove = (Math.floor(Math.random() * ((this.moveList.length - 1) + 1)) + 1).toString();
+        console.log(Game.computerMove);
         return Game.computerMove;
     }
 
-    static getGameWinner(userMove: string) {
-        const aditionalMovement = 1;
-        const winner = Math.sign((+this.computerMove - +userMove + aditionalMovement + moveList.length) % moveList.length - aditionalMovement);
+    static getGameWinner(userMove: string, machineMove?: string) {
+        const pcMove = machineMove || this.computerMove;
+        const halfMovement = (moveList.length - 1) / 2;
+        const winner = Math.sign((Number(pcMove) - Number(userMove) + halfMovement + moveList.length) % moveList.length - halfMovement);
+        return winner;
+    }
 
-        console.log(`Your move: ${moveList[+userMove - 1]}`);
+    static showWinner(winner: number) {
+        console.log(`Your move: ${moveList[+this.userMove - 1]}`);
         console.log(`Computer move: ${moveList[+Game.computerMove - 1]}`);
 
         if (winner === 1) {
@@ -65,7 +71,43 @@ class Game {
     }
 
     static showHelp() {
-        return console.log('Not implemented method');
+
+        const winnersSimulationList = moveList.map((columnMove) => {
+
+            const currentColumnMove = (moveList.indexOf(columnMove) + 1).toString();
+
+            const currentColumn: string[] = [];
+
+            for (let i = 0; i < moveList.length; i++) {
+                const rowMove = (moveList.indexOf(moveList[i]) + 1).toString();
+                const currentWinner = this.getGameWinner(currentColumnMove, rowMove);
+
+                let resultMessage = '';
+
+                if (currentWinner === 1) {
+                    resultMessage = 'Win';
+                } else if (currentWinner === -1) {
+                    resultMessage = 'Lose';
+                } else {
+                    resultMessage = 'Draw';
+                }
+                currentColumn.push(resultMessage);
+            }
+
+            return currentColumn;
+
+        })
+
+        const table = new Table({
+            head: ['↓ PC / User →', ...moveList],
+        });
+
+        moveList.forEach((move, index) => {
+            const currentSimulation = winnersSimulationList[index];
+            table.push([move, ...currentSimulation])
+        })
+
+        console.log(table.toString());
     }
 }
 class MenuGame {
@@ -98,9 +140,7 @@ class MenuGame {
 
         const userMove = readline.question("Enter your move: ");
         MenuGame.selectMove(userMove);
-        return userMove;
     }
-
 
     static selectMove(move: string) {
         const availableMoves = this.moveList.map((move, index) => (index + 1).toString());
@@ -108,7 +148,9 @@ class MenuGame {
         if (move === '?') return Game.showHelp();
 
         if (availableMoves.includes(move)) {
-            Game.getGameWinner(move);
+            Game.userMove = move;
+            const winner = Game.getGameWinner(move);
+            Game.showWinner(winner);
         } else {
             Error.invalidSelection();
             this.showMenu();

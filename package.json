@@ -10,6 +10,7 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/cli-table": "^0.3.4",
     "@types/node": "^20.14.11",
     "@types/readline-sync": "^1.4.8",
     "ts-node": "^10.9.2",
@@ -17,6 +18,7 @@
   },
   "dependencies": {
     "ascii-table": "^0.0.9",
+    "cli-table": "^0.3.11",
     "readline-sync": "^1.4.10"
   }
 }
