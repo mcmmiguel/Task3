@@ -17,5 +17,5 @@ if (formattedMoveList) {
     GameMenu.showMenu();
 
     console.log(colors.yellow('HMAC Key: ' + secretKey));
-    console.log(colors.underline('Check the computer move on:'), colors.blue('https://www.liavaag.org/English/SHA-Generator/HMAC/'), colors.italic('/ Use the movement number as input. Ej. 3'));
+    console.log(colors.underline('Check the computer move on:'), colors.blue('https://www.liavaag.org/English/SHA-Generator/HMAC/'), colors.italic('/ Use the movement number as input. Ex. 3'));
 }
