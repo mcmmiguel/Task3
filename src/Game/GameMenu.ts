@@ -12,11 +12,11 @@ export default class GameMenu {
         const duplicates = formattedMoves.filter((value, index, self) => self.indexOf(value) !== index);
 
         if (duplicates.length) {
-            return console.log(Error.duplicatedMoves());;
+            return console.log(colors.bgRed(Error.duplicatedMoves()));;
         }
 
         if (formattedMoves.length < 3 || formattedMoves.length % 2 === 0) {
-            return console.log(Error.invalidLength());
+            return console.log(colors.bgRed(Error.invalidLength()));
         }
 
         this.moveList = formattedMoves;
@@ -45,7 +45,7 @@ export default class GameMenu {
             const winner = Game.getGameWinner(move);
             Game.showWinner(winner);
         } else {
-            console.log(Error.invalidSelection());
+            console.log(colors.bgRed(Error.invalidSelection()));
             this.showMenu();
         }
 
