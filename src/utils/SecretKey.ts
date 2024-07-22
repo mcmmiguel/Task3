@@ -1,6 +1,7 @@
 export default class SecretKey {
     static generateKey() {
         const crypto = require('crypto');
-        return crypto.createHash('sha3-256').update('mcmmiguel').digest('hex');
+        const randomBytes = crypto.randomBytes(32);
+        return crypto.createHash('sha3-256').update(randomBytes).digest('hex');
     }
 }
